@@ -1,0 +1,24 @@
+variables:
+  DOCKER_DIR: "/home/dev/public_html/R-T/dev/r-t-docker"
+  PROJECT_DIR: "/home/dev/public_html/R-T/dev/training-spring-boot-codebase"
+
+stages:
+- dev-deploy
+
+update-app:
+  stage: dev-deploy
+  script:
+    - cd $PROJECT_DIR && git checkout $CI_COMMIT_BRANCH -f && git pull
+  tags:
+    - dev2
+  only:
+    - develop
+
+build-app:
+  stage: dev-deploy
+  script:
+    - cd $DOCKER_DIR && bash gitlab/backend.sh
+  tags:
+    - dev2
+  only:
+    - develop
